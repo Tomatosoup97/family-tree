@@ -2,13 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class FamilyMember(AbstractUser):
-
-    father = models.ForeignKey('self', related_name='father')
-    mother = models.ForeignKey('self', related_name='mother')
-    sons = models.ManyToManyField(
-        'self', blank=True, related_name='sons')
-    daughters = models.ManyToManyField(
-        'self', blank=True, related_name='daughter')
+    parents = models.ManyToManyField('self', related_name='parents')
+    children = models.ManyToManyField('self', related_name='children')
 
     born = models.DateTimeField('born date', db_index=True)
     died = models.DateTimeField(
@@ -16,3 +11,6 @@ class FamilyMember(AbstractUser):
 
     def __str__(self):
         return self.first_name + self.last_name
+
+    def years(self):
+        return self.died.year - self.born.year
