@@ -25,12 +25,13 @@ SECRET_KEY = 'ch1c=*6bxd5n^&#$a7o@t16_*jwfig$6b_@-c5r4)tfhx^8%zc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
+AUTH_USER_MODEL = 'tree.FamilyMember'
 
 # Application definition
-
-INSTALLED_APPS = [
+# 
+DEFAULT_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,6 +39,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+LOCAL_APPS = [
+    'core',
+    'tree',
+]
+
+THIRD_PARTY_APPS = [
+    'debug_toolbar',
+    'rest_framework',
+]
+
+INSTALLED_APPS = DEFAULT_APPS + LOCAL_APPS + THIRD_PARTY_APPS
+
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -50,7 +64,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'family_tree.urls'
+ROOT_URLCONF = 'conf.urls'
 
 TEMPLATES = [
     {
@@ -68,7 +82,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'family_tree.wsgi.application'
+WSGI_APPLICATION = 'conf.wsgi.application'
 
 
 # Database
