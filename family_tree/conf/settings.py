@@ -29,6 +29,10 @@ ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = 'tree.FamilyMember'
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
+}
+
 # Application definition
 # 
 DEFAULT_APPS = [

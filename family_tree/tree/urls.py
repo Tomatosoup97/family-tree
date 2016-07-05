@@ -6,3 +6,7 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'family', views.FamilyTreeViewSet)
+
+urlpatterns = [
+    url(r'^', include(router.urls)),
+]
