@@ -6,15 +6,22 @@ class FamilyMember(models.Model):
     first_name = models.CharField('first name', max_length=200)
     last_name = models.CharField('last name', max_length=200)
     family_name = models.CharField('family name', max_length=200, blank=True)
-    parents = models.ManyToManyField('self', related_name='parents')
-    children = models.ManyToManyField('self', related_name='children')
 
-    image = models.ImageField('image')
+    parents = models.ManyToManyField(
+            'self', related_name='children', blank=True)
+
+    GENDER_CHOICES = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+    )
+    gender = models.CharField(max_length=2, choices=GENDER_CHOICES)
+
+    image = models.ImageField('image', blank=True)
     description = models.TextField('description')
-    born = models.DateTimeField('born date', db_index=True)
-    died = models.DateTimeField(
-        'date of death', db_index=True, null=True, blank=True,
-        help_text='leave empty if member is still alive')
+    born = models.DateField('born date', db_index=True)
+    died = models.DateField(
+            'date of death', db_index=True, null=True, blank=True,
+            help_text='leave empty if member is still alive')
 
     def __str__(self):
         return self.first_name + self.last_name
