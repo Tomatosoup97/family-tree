@@ -20,4 +20,5 @@ slave/
 .coverage
 *.log
 .cache
+db.sqlite3
 .mo
