@@ -2,14 +2,14 @@ from rest_framework import filters
 
 class ChildFilterBackend(filters.BaseFilterBackend):
     """
-    Return only children of current user
+    Return only children from current user
     """
     def filter_queryset(self, request, queryset, view):
-        return queryset.filter(children=request.user.child)
+        return queryset.filter(children__parent=request.user.id)
 
 class ParentFilterBackend(filters.BaseFilterBackend):
     """
-    Return only parents of current user
+    Return only parents from current user
     """
     def filter_queryset(self, request, queryset, view):
-        return queryset.filter(parents=request.user.child)
+        return queryset.filter(parents__children=request.user.id)
