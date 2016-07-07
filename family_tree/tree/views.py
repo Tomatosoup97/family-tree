@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.utils import six 
+from django.db.models import Q
 
 from rest_condition import And, Or, Not
 from rest_framework import status
@@ -26,11 +27,12 @@ class FamilyTreeViewSet(NestedViewSetMixin,
     pagination_class = SmallTreePagination
 
 class ParentViewSet(FamilyTreeViewSet):
-
+    """
+    List all member's parents
+    """
     def get_queryset(self):
         parents_query_dict = self.get_parents_query_dict()
         if parents_query_dict:
-            print(parents_query_dict)
             try:
                 id = parents_query_dict['id']
                 member = FamilyMember.objects.filter(id=id)
@@ -40,17 +42,23 @@ class ParentViewSet(FamilyTreeViewSet):
                 raise Http404
         else:
             return self.queryset
-        return FamilyMember.objects
 
-    def get_parents_query_dict(self):
-        result = {}
-        for kwarg_name, kwarg_value in six.iteritems(self.kwargs):
-            if kwarg_name.startswith('parent_lookup_'):
-                query_lookup = kwarg_name.replace(
-                    'parent_lookup_',
-                    '',
-                    1
-                )
-                query_value = kwarg_value
-                result[query_lookup] = query_value
-        return result
+class SiblingViewSet(FamilyTreeViewSet):
+    """
+    List all member's siblings
+    """
+    def get_queryset(self):
+        parents_query_dict = self.get_parents_query_dict()
+        if parents_query_dict:
+            try:
+                id = parents_query_dict['id']
+                member = FamilyMember.objects.filter(id=id)
+                parents_ids = member.values_list('parents__id')
+                # Exclude current member
+                queryset = FamilyMember.objects.filter(
+                            parents__in=parents_ids).exclude(id=id)
+                return queryset
+            except ValueError:
+                raise Http404
+        else:
+            return self.queryset

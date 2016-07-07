@@ -4,3 +4,4 @@ Family tree implementation as REST Api
 /family/{id} - family member detail
 /family/{id}/children - family member children
 /family/{id}/parents - family member parents
+/family/{id}/siblings - family member siblings

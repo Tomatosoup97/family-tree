@@ -7,9 +7,9 @@ from . import views
 
 router = routers.ExtendedDefaultRouter()
 family_routes = router.register(
-        r'family',
-        views.FamilyTreeViewSet,
-        base_name='member')
+                r'family',
+                views.FamilyTreeViewSet,
+                base_name='member')
         
 family_routes.register(r'children',
                 views.FamilyTreeViewSet,
@@ -19,6 +19,11 @@ family_routes.register(r'children',
 family_routes.register(r'parents',
                 views.ParentViewSet,
                 base_name='member-parent',
+                parents_query_lookups=['id'])
+
+family_routes.register(r'siblings',
+                views.SiblingViewSet,
+                base_name='member-sibling',
                 parents_query_lookups=['id'])
 
 urlpatterns = [
