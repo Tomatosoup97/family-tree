@@ -8,7 +8,7 @@ class FamilyMember(models.Model):
     family_name = models.CharField('family name', max_length=200, blank=True)
 
     parents = models.ManyToManyField(
-            'self', related_name='children', blank=True)
+            'self', related_name='children', blank=True, symmetrical=False)
 
     GENDER_CHOICES = (
         ('M', 'Male'),
@@ -24,7 +24,7 @@ class FamilyMember(models.Model):
             help_text='leave empty if member is still alive')
 
     def __str__(self):
-        return self.first_name + self.last_name
+        return self.first_name + " " + self.last_name
 
     def years(self):
         return self.died.year - self.born.year
